@@ -8,10 +8,9 @@ import Link from 'next/link';
 export default function NewOrderPage() {
   const [form, setForm] = useState({
     customerName: '',
-    products: [
-      { productId: '', quantity: '' },
-    ],
+    products: [{ productId: '', quantity: '' }],
     status: 'Pending',
+    trackingNumber: '', // Optional tracking number
   });
   const [productsList, setProductsList] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
@@ -54,20 +53,20 @@ export default function NewOrderPage() {
 
   const createOrder = async (e) => {
     e.preventDefault();
-  
+
     // Validate form data
     if (!form.customerName) {
       setErrorMessage('Customer name is required.');
       return;
     }
-  
+
     for (const product of form.products) {
       if (!product.productId || !product.quantity) {
         setErrorMessage('Please select a product and enter a quantity for each item.');
         return;
       }
     }
-  
+
     try {
       await axios.post('/api/orders', form);
       router.push('/orders');
@@ -80,10 +79,9 @@ export default function NewOrderPage() {
       setErrorMessage(errorMsg);
     }
   };
-  
+
   return (
     <div>
-      {/* Navigation Bar */}
       <Link href="/orders" className="inline-block bg-gray-500 text-white p-2 mb-4">
         Back to Orders
       </Link>
@@ -100,6 +98,15 @@ export default function NewOrderPage() {
           value={form.customerName}
           onChange={handleFormChange}
           required
+          className="text-black bg-white border p-2 mb-4 w-full"
+        />
+
+        {/* Tracking Number (Optional) */}
+        <input
+          name="trackingNumber"
+          placeholder="Tracking Number (Optional)"
+          value={form.trackingNumber}
+          onChange={handleFormChange}
           className="text-black bg-white border p-2 mb-4 w-full"
         />
 
@@ -164,7 +171,6 @@ export default function NewOrderPage() {
           <option value="Delivered">Delivered</option>
         </select>
 
-        {/* Submit Button */}
         <button type="submit" className="bg-blue-500 text-white p-2">
           Create Order
         </button>

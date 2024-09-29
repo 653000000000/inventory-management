@@ -55,7 +55,7 @@ export default async function handler(req, res) {
           );
         }
 
-        // Update the order with the new data
+        // Update the order with the new data, including trackingNumber
         const order = await Order.findByIdAndUpdate(id, updatedOrder, {
           new: true,
           runValidators: true,

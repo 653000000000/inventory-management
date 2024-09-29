@@ -23,10 +23,9 @@ export default async function handler(req, res) {
       }
       break;
 
-
     case 'POST':
       try {
-        const { customerName, products, status } = req.body;
+        const { customerName, products, status, trackingNumber } = req.body;
 
         // Validate stock availability for each product
         for (const item of products) {
@@ -52,8 +51,8 @@ export default async function handler(req, res) {
           );
         }
 
-        // Create the order
-        const order = await Order.create({ customerName, products, status });
+        // Create the order, including trackingNumber
+        const order = await Order.create({ customerName, products, status, trackingNumber });
 
         res.status(201).json({ success: true, data: order });
       } catch (error) {

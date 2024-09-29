@@ -32,6 +32,10 @@ export default function ViewEditOrderPage() {
     setOrder({ ...order, products: newProducts });
   };
 
+  const handleInputChange = (e) => {
+    setOrder({ ...order, [e.target.name]: e.target.value });
+  };
+
   const saveOrder = async (e) => {
     e.preventDefault();
     try {
@@ -58,7 +62,6 @@ export default function ViewEditOrderPage() {
     }
   };
 
-  // Calculate total cost of the order
   const calculateTotalCost = () => {
     return order.products.reduce((total, product) => {
       return product.productId
@@ -85,9 +88,32 @@ export default function ViewEditOrderPage() {
           <input
             type="text"
             value={order.customerName}
-            onChange={(e) => setOrder({ ...order, customerName: e.target.value })}
+            name="customerName"
+            onChange={handleInputChange}
             className="text-black bg-white border p-2 mb-4 w-full"
           />
+
+          <label className="block mb-2 text-white">Tracking Number (Optional):</label>
+          <input
+            type="text"
+            value={order.trackingNumber || ''}
+            name="trackingNumber"
+            onChange={handleInputChange}
+            className="text-black bg-white border p-2 mb-4 w-full"
+          />
+
+          {/* Order Status */}
+          <label className="block mb-2 text-white">Order Status:</label>
+          <select
+            name="status"
+            value={order.status}
+            onChange={handleInputChange}
+            className="text-black bg-white border p-2 mb-4 w-full"
+          >
+            <option value="Pending">Pending</option>
+            <option value="Shipped">Shipped</option>
+            <option value="Delivered">Delivered</option>
+          </select>
 
           <h2 className="text-white font-bold mb-2">Products</h2>
           {order.products.map((product, index) => (
@@ -128,6 +154,9 @@ export default function ViewEditOrderPage() {
           <p className="text-white mb-2">
             <strong>Status:</strong> {order.status}
           </p>
+          <p className="text-white mb-2">
+            <strong>Tracking Number:</strong> {order.trackingNumber || 'N/A'}
+          </p>
           <div className="text-white mb-4">
             <strong>Products:</strong>
             <ul>
@@ -146,12 +175,10 @@ export default function ViewEditOrderPage() {
             </ul>
           </div>
 
-          {/* Display the total cost */}
           <p className="text-white font-bold text-xl">
             Total Cost: ${calculateTotalCost().toFixed(2)}
           </p>
 
-          {/* Edit and Delete Buttons */}
           <button
             onClick={() => setIsEditing(true)}
             className="bg-blue-500 text-white p-2 mr-2"
@@ -160,7 +187,6 @@ export default function ViewEditOrderPage() {
           </button>
 
           {!isDeleting ? (
-            // Show the delete button initially
             <button
               onClick={() => setIsDeleting(true)}
               className="bg-red-500 text-white p-2"
@@ -168,17 +194,16 @@ export default function ViewEditOrderPage() {
               Delete Order
             </button>
           ) : (
-            // Once delete is clicked, show the two confirm options
             <div className="mt-4">
               <p className="text-white mb-2">Do you want to return the product quantities to the inventory?</p>
               <button
-                onClick={() => deleteOrder(true)} // Return product quantities
+                onClick={() => deleteOrder(true)}
                 className="bg-green-500 text-white p-2 mr-2"
               >
                 Yes, Return Quantities
               </button>
               <button
-                onClick={() => deleteOrder(false)} // Just delete the order
+                onClick={() => deleteOrder(false)}
                 className="bg-red-500 text-white p-2"
               >
                 No, Just Delete

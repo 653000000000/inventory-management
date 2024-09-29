@@ -12,6 +12,7 @@ const OrderSchema = new mongoose.Schema({
   orderDate: { type: Date, default: Date.now },
   customerName: { type: String, required: true },
   totalCost: { type: Number },
+  trackingNumber: { type: String, default: null }, // Optional field
   status: {
     type: String,
     enum: ['Pending', 'Shipped', 'Delivered'],

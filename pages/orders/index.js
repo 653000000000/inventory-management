@@ -54,6 +54,7 @@ export default function OrdersPage() {
             <tr>
               <th className="border border-gray-800 px-4 py-2 text-center">Order ID</th>
               <th className="border border-gray-800 px-4 py-2 text-center">Customer Name</th>
+              <th className="border border-gray-800 px-4 py-2 text-center">Tracking Number</th>
               <th className="border border-gray-800 px-4 py-2 text-center">Status</th>
               <th className="border border-gray-800 px-4 py-2 text-center">Total Cost</th>
               <th className="border border-gray-800 px-4 py-2 text-center">Actions</th>
@@ -64,6 +65,7 @@ export default function OrdersPage() {
               <tr key={order._id} className="text-center">
                 <td className="border border-gray-800 px-4 py-2 text-center">{order._id}</td>
                 <td className="border border-gray-800 px-4 py-2 text-center">{order.customerName}</td>
+                <td className="border border-gray-800 px-4 py-2 text-center">{order.trackingNumber || 'N/A'}</td>
                 <td className="border border-gray-800 px-4 py-2 text-center">{order.status}</td>
                 <td className="border border-gray-800 px-4 py-2 text-center">
                   ${calculateTotalCost(order).toFixed(2)}
